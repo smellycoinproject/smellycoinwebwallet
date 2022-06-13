@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+    <title>Smellycoin | Transactions</title>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static',filename='styles/mvp.css') }}">
+        <style>
+            body.darkMode {
+                --color: #0097fc;
+                --color-accent: #0097fc4f;
+                --color-bg: #333;
+                --color-bg-secondary: #555;
+                --color-link: #0097fc;
+                --color-secondary: #e20de9;
+                --color-secondary-accent: #e20de94f;
+                --color-shadow: #bbbbbb20;
+                --color-table: #0097fc;
+                --color-text: #f7f7f7;
+                --color-text-secondary: #aaa;
+            }
+    
+            body.lightMode {
+                --color: #118bee;
+                --color-accent: #118bee15;
+                --color-bg: #fff;
+                --color-bg-secondary: #e9e9e9;
+                --color-link: #118bee;
+                --color-secondary: #920de9;
+                --color-secondary-accent: #920de90b;
+                --color-shadow: #f4f4f4;
+                --color-table: #118bee;
+                --color-text: #000;
+                --color-text-secondary: #999;
+            }
+            .container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                min-height: 100vh;
+                font: Courier;
+                font-family: 'Courier New', Courier, monospace;
+            }
+            .buttonsubm {            
+                text-align: center;
+                display: block;
+                margin: 0 auto;
+            }
+        </style>
+        <script>
+            function toggleDarkMode() {
+                let bodyTag = document.getElementsByTagName('body')[0];
+                let toggleTag = document.getElementById('colorToggle');
+                
+                if (bodyTag.classList.contains('lightMode')) {
+                    bodyTag.classList.replace('lightMode', 'darkMode');
+                    toggleTag.innerHTML = 'Light Mode';
+                } else {
+                    bodyTag.classList.replace('darkMode', 'lightMode');
+                    toggleTag.innerHTML = 'Dark Mode';
+                }
+            }
+    
+            function handleDarkMode() {
+                let bodyTag = document.getElementsByTagName('body')[0];
+                let toggleTag = document.getElementById('colorToggle');
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    bodyTag.classList.add('darkMode');
+                    toggleTag.innerHTML = 'Light Mode';
+                } else {
+                    bodyTag.classList.add('lightMode');
+                    toggleTag.innerHTML = 'Dark Mode';
+                }
+            }
+            
+            if ( window.history.replaceState ) {
+                window.history.replaceState( null, null, window.location.href );
+            }
+            
+            window.onload = handleDarkMode;
+        </script>
+    </head>
+
+    
+    <body>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class=flashes>
+                {% for message in messages %}
+                    <p>{{ message | safe }}</p>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+    <div class="container" target="_blank">
+        <button onClick="toggleDarkMode();" id="colorToggle" class="buttonsubm">lightmode</button>
+        <br>
+        <br>
+        <form method="POST" action='/wallet/transactions/new'>
+            <h1 style="text-align: center;">Current Balance: </h1>
+            <h1 style="text-align: center;">{{ balance }}</h1>
+            
+            <p style="text-align: center;">Address to send to</p>
+            <input class="buttonsubm" id="recv" name="recv"></input>
+        
+        
+        
+            <p style="text-align: center;">Amount to send</p>
+            <input class="buttonsubm" id="amount" name="amount"></input>
+            <br>
+            
+            <p style="text-align: center;"><a href="/wallet">Back To Wallet</a></p>
+            <br>
+            <button class="buttonsubm" type="submit">Send Transaction</button>
+        </form>
+    </div>
+
+
+    </body>
